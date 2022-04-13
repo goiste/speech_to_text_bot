@@ -5,10 +5,22 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 func Convert(name string, data []byte) (string, []byte, error) {
-	baseName := name[:strings.LastIndex(name, ".")]
+	if name == "" {
+		name = fmt.Sprintf("no_name_%d", time.Now().UnixMilli())
+	}
+
+	lastIdx := strings.LastIndex(name, ".")
+	baseName := ""
+	if lastIdx > 0 {
+		baseName = name[:lastIdx]
+	} else {
+		baseName = name
+	}
+
 	opusName := fmt.Sprintf("%s_converted.opus", baseName)
 	srcPath := fmt.Sprintf("/tmp/%s", name)
 	dstPath := fmt.Sprintf("/tmp/%s", opusName)

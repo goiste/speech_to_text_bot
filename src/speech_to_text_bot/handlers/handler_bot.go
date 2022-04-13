@@ -33,7 +33,12 @@ func (h *Handler) handleUpdate(upd tgbotapi.Update, errChan chan error) {
 			name = message.ForwardFromChat.Title
 		}
 
-		h.handlePost(message, name, false, errChan)
+		var voiceOnly bool
+		if message.Chat.Type == "supergroup" {
+			voiceOnly = true
+		}
+
+		h.handlePost(message, name, voiceOnly, errChan)
 		return
 	}
 }
